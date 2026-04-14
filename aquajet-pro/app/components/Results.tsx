@@ -10,63 +10,52 @@ const comparisons = [
   {
     label: "Residential Bin",
     location: "Myers Park, Charlotte",
-    before: "/results/before-1.jpg",
-    afterImg: "/results/after-1.jpg",
+    before: "/Before1.jpg",
+    afterImg: "/After1.jpg",
   },
   {
     label: "Large Recycling Bin",
     location: "Ballantyne, Charlotte",
-    before: "/results/before-2.jpg",
-    afterImg: "/results/after-2.jpg",
+    before: "/Before2.jpg",
+    afterImg: "/After2.jpg",
   },
   {
     label: "Commercial Bin",
     location: "University City, Charlotte",
-    before: "/results/before-3.jpg",
-    afterImg: "/results/after-3.jpg",
+    before: "/Before3.jpg",
+    afterImg: "/After3.jpg",
   },
 ];
 
-function PlaceholderComparison({ label }: { label: string }) {
+function RealComparison({ before, after, label }: { before: string; after: string; label: string }) {
   return (
     <ImageComparison className="w-full h-full rounded-xl" enableHover>
-      {/* Before placeholder */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900">
-        <div className="w-16 h-16 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center mb-3">
-          <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white/20">
-            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
-            <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M21 15L16 10L9 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <p className="text-white/20 text-xs tracking-widest uppercase">Before Photo</p>
-        <p className="text-white/10 text-[11px] mt-1">{label}</p>
-      </div>
-
-      {/* After placeholder */}
-      <div
-        className="absolute inset-0 flex flex-col items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #0a0a0a 0%, #0f1a0f 100%)" }}
-      >
-        <div
-          className="w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center mb-3"
-          style={{ borderColor: "#03ffff40" }}
-        >
-          <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7" style={{ color: "#03ffff50" }}>
-            <path d="M12 2C12 2 6 7.5 6 12C6 15.314 8.686 18 12 18C15.314 18 18 15.314 18 12C18 7.5 12 2 12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-            <path d="M9 14L11 16L15 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <p className="text-[11px] tracking-widest uppercase" style={{ color: "#03ffff60" }}>After Photo</p>
-        <p className="text-[11px] mt-1" style={{ color: "#03ffff30" }}>{label}</p>
-      </div>
+      <ImageComparisonImage src={before} alt={`Before — ${label}`} position="right" />
+      <ImageComparisonImage src={after} alt={`After — ${label}`} position="left" />
 
       {/* Slider */}
       <ImageComparisonSlider className="bg-white/80 w-[2px]">
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-2 border-white flex items-center justify-center shadow-lg">
+        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-lg">
           <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4">
-            <path d="M6 10H14M6 10L8.5 7.5M6 10L8.5 12.5M14 10L11.5 7.5M14 10L11.5 12.5" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M6 10H14M6 10L8.5 7.5M6 10L8.5 12.5M14 10L11.5 7.5M14 10L11.5 12.5"
+              stroke="#000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
+        </div>
+
+        {/* Before / After labels on the slider */}
+        <div className="absolute top-3 right-3 text-[11px] font-semibold text-white bg-black/50 px-2 py-0.5 rounded-full">
+          Before
+        </div>
+        <div
+          className="absolute top-3 left-3 text-[11px] font-semibold px-2 py-0.5 rounded-full"
+          style={{ background: "#03ffff20", color: "#03ffff", border: "1px solid #03ffff40" }}
+        >
+          After
         </div>
       </ImageComparisonSlider>
     </ImageComparison>
@@ -106,7 +95,11 @@ export default function Results() {
             <div key={item.label} className="flex flex-col gap-3">
               {/* Card */}
               <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/[0.08]">
-                <PlaceholderComparison label={item.label} />
+                <RealComparison
+                  before={item.before}
+                  after={item.afterImg}
+                  label={item.label}
+                />
               </div>
 
               {/* Labels */}
@@ -128,14 +121,7 @@ export default function Results() {
           ))}
         </div>
 
-        {/* Coming soon note */}
-        <div className="mt-10 flex items-center justify-center gap-3">
-          <div className="h-px flex-1 bg-white/[0.06]" />
-          <p className="text-[12px] text-white/25 tracking-widest uppercase whitespace-nowrap">
-            Real photos coming soon
-          </p>
-          <div className="h-px flex-1 bg-white/[0.06]" />
-        </div>
+        {/* Remove coming soon note since we have real photos now */}
 
       </div>
     </section>
