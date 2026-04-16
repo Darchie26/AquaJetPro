@@ -3,34 +3,36 @@
 const plans = [
   {
     name: "One-Time Clean",
-    price: "$35",
+    price: "$45",
     original: null,
     cadence: "one-time",
     description: "A single deep clean whenever you need it. No commitment required.",
     features: [
-      "Hot water pressure wash",
-      "Eco-safe deodorizer & sanitize",
-      "Before & after photo sent via text",
-      "Curbside service",
-      "All bin types supported",
+      { title: "Hot Water Pressure Wash", desc: "High-pressure hot water blasts away grime and bacteria" },
+      { title: "2 Bin Cleaning Included", desc: "Trash and recycling bins both cleaned in one visit" },
+      { title: "Eco-Safe Deodorizer & Sanitize", desc: "Non-toxic solution that eliminates odors at the source" },
+      { title: "Before & After Photo", desc: "Sent directly to your phone after every clean" },
+      { title: "Curbside Service", desc: "We come to you — no need to drag bins anywhere" },
     ],
     cta: "Book a Clean",
     popular: false,
-    accent: "#ff00f3",
+    accent: "#03ffff",
   },
   {
-    name: "Weekly Bin-to-Curb",
+    name: "Never Touch Your Trash Again",
     price: "$55",
     original: null,
     cadence: "per month",
-    description: "Our most complete package — we handle everything from curb to clean.",
+    description: "Never touch a dirty trash bin again—just clean, fresh bins delivered to your curb every month.",
     features: [
-      "Weekly bin-to-curb service",
-      "All bin types supported",
-      "Photo updates & notifications",
-      "Monthly trash bin power wash",
-      "Priority scheduling",
-      "Cancel anytime",
+      { title: "Weekly Bin-to-Curb Service", desc: "We move your bins to the curb before pickup and return them after" },
+      { title: "Monthly Trash Bin Power Wash", desc: "Deep power wash included every month at no extra charge" },
+
+      { title: "2 Bin Cleaning Included", desc: "Trash, recycling, and compost bins supported" },
+      { title: "Weekly Deodorizer", desc: "Fresh deodorizer applied to your bins each week" },
+      { title: "Photo Updates & Notifications", desc: "Get notified when your bins are moved with photo confirmation" },
+      { title: "Cancel Anytime", desc: "No long-term commitment — pause or cancel with one text" },
+  
     ],
     cta: "Get Started",
     popular: true,
@@ -43,12 +45,12 @@ const plans = [
     cadence: "per month",
     description: "Recurring monthly power wash to keep your bins fresh all year long.",
     features: [
-      "Monthly trash bin power wash",
-      "Hot water pressure wash",
-      "Eco-safe deodorizer & sanitize",
-      "Before & after photo sent via text",
-      "All bin types supported",
-      "Cancel anytime",
+      { title: "Monthly Trash Bin Power Wash", desc: "Deep clean once a month on your trash day schedule" },
+      { title: "2 Bin Cleaning Included", desc: "Trash and recycling bins both cleaned every month" },
+      { title: "Hot Water Pressure Wash", desc: "High-pressure hot water blasts away grime and bacteria" },
+      { title: "Eco-Safe Deodorizer & Sanitize", desc: "Non-toxic solution that eliminates odors at the source" },
+      { title: "Photo Updates & Notifications", desc: "Get notified after each clean with before & after photos" },
+      { title: "Cancel Anytime", desc: "No long-term commitment — pause or cancel with one text" },
     ],
     cta: "Subscribe Now",
     popular: false,
@@ -67,7 +69,7 @@ export default function Pricing() {
             Simple Pricing
           </span>
           <h2 className="font-montserrat font-black text-[clamp(32px,4vw,52px)] leading-[1.05] tracking-tight text-white mb-4">
-            Pick Your Plan
+            Never Touch Your <span className="text-[#ff00f3]">Trash</span> Again
           </h2>
           <p className="text-white/50 text-[16px] leading-relaxed max-w-md">
             No hidden fees. No contracts unless you want one. Just clean bins.
@@ -120,17 +122,17 @@ export default function Pricing() {
               <div className="border-t border-white/[0.07] mb-6" />
 
               {/* Features */}
-              <ul className="flex flex-col gap-3 mb-8 flex-1">
+              <ul className="flex flex-col gap-4 mb-8 flex-1">
                 {plan.features.map((feature) => (
                   <li
-                    key={feature}
-                    className="flex items-start gap-3 text-[14px] text-white/60"
+                    key={feature.title}
+                    className="flex items-start gap-3"
                   >
                     <svg
                       viewBox="0 0 16 16"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 shrink-0 mt-[2px]"
+                      className="w-4 h-4 shrink-0 mt-[3px]"
                     >
                       <circle
                         cx="8"
@@ -148,7 +150,14 @@ export default function Pricing() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    {feature}
+                    <div>
+                      <p className="text-[13px] font-semibold text-white leading-snug">
+                        {feature.title}
+                      </p>
+                      <p className="text-[12px] text-white/35 leading-relaxed mt-0.5">
+                        {feature.desc}
+                      </p>
+                    </div>
                   </li>
                 ))}
               </ul>
