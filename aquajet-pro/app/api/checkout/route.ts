@@ -55,7 +55,6 @@ async function saveToAirtable(data: {
           "Plan": data.plan,
           "Trash Day": data.trashDay,
           "Notes": data.notes,
-          "Created At": new Date().toISOString().split("T")[0],
         },
       }),
     }
@@ -81,17 +80,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
-    // Save to Airtable first
-    await saveToAirtable({
-      firstName,
-      lastName,
-      phone,
-      email,
-      address,
-      plan,
-      trashDay,
-      notes: notes || "",
-    });
+    // Save to Airtable — non-blocking so Stripe still works if this fails
+    try {
+      await saveToAirtable({
+        firstName,
+        lastName,
+        phone,
+        email,
+        address,
+        plan,
+        trashDay,
+        notes: notes || "",
+      });
+    } catch (airtableError) {
+      console.error("Airtable save failed (non-blocking):", airtableError);
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
