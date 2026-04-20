@@ -19,7 +19,7 @@ type FormData = {
 type Props = {
   plan: { name: string; price: string; cadence: string } | null;
   onClose: () => void;
-  onConfirm: (planName: string) => void;
+  onConfirm: (planName: string, formData: FormData) => void;
 };
 
 export default function BookingModal({ plan, onClose, onConfirm }: Props) {
@@ -72,7 +72,7 @@ export default function BookingModal({ plan, onClose, onConfirm }: Props) {
   };
 
   const handleSubmit = () => {
-    onConfirm(plan.name);
+    onConfirm(plan.name, form);
   };
 
   const inputClass = (field: keyof FormData) =>

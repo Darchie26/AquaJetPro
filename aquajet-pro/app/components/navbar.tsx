@@ -27,7 +27,7 @@ export default function Navbar() {
             alt="AquaJet Pro"
             width={160}
             height={48}
-            className="h-24 w-auto object-contain"
+            className="h-10 w-auto object-contain"
             priority
           />
         </Link>
@@ -48,10 +48,9 @@ export default function Navbar() {
 
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          <button className="text-sm font-medium text-white/60 border border-white/15 px-[18px] py-[9px] rounded-lg hover:border-[#03ffff]/40 hover:text-[#03ffff] transition-all duration-200 bg-transparent cursor-pointer">
-            Sign In
-          </button>
-          <button className="text-sm font-bold text-black bg-[#ff00f3] px-5 py-[9px] rounded-lg hover:brightness-110 transition-all duration-200 border-none cursor-pointer">
+          <button
+            onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-sm font-bold text-black bg-[#ff00f3] px-5 py-[9px] rounded-lg hover:brightness-110 transition-all duration-200 border-none cursor-pointer">
             Book a Clean →
           </button>
         </div>
@@ -81,7 +80,12 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <button className="mt-3 w-full bg-[#ff00f3] text-black font-bold text-[15px] py-3 rounded-lg hover:brightness-110 transition-all border-none cursor-pointer">
+          <button
+            onClick={() => {
+              setMobileOpen(false);
+              document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="mt-3 w-full bg-[#ff00f3] text-black font-bold text-[15px] py-3 rounded-lg hover:brightness-110 transition-all border-none cursor-pointer">
             Book a Clean →
           </button>
         </div>

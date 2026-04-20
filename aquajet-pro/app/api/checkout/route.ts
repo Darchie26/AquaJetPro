@@ -23,14 +23,75 @@ const PRICES = {
   },
 };
 
+async function saveToAirtable(data: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  address: string;
+  plan: string;
+  trashDay: string;
+  notes: string;
+}) {
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const tableName = process.env.AIRTABLE_TABLE_NAME || "Bookings";
+  const apiKey = process.env.AIRTABLE_API_KEY;
+
+  const res = await fetch(
+    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fields: {
+          "First Name": data.firstName,
+          "Last Name": data.lastName,
+          "Phone": data.phone,
+          "Email": data.email,
+          "Address": data.address,
+          "Plan": data.plan,
+          "Trash Day": data.trashDay,
+          "Notes": data.notes,
+          "Created At": new Date().toISOString().split("T")[0],
+        },
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Airtable error:", error);
+    throw new Error("Failed to save to Airtable");
+  }
+
+  return res.json();
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { plan } = await req.json();
+    const { plan, firstName, lastName, phone, email, address, trashDay, notes } =
+      await req.json();
+
     const priceConfig = PRICES[plan as keyof typeof PRICES];
 
     if (!priceConfig) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
+
+    // Save to Airtable first
+    await saveToAirtable({
+      firstName,
+      lastName,
+      phone,
+      email,
+      address,
+      plan,
+      trashDay,
+      notes: notes || "",
+    });
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -39,6 +100,7 @@ export async function POST(req: NextRequest) {
     if (priceConfig.mode === "payment") {
       session = await stripe.checkout.sessions.create({
         mode: "payment",
+        customer_email: email,
         line_items: [
           {
             price_data: {
@@ -58,6 +120,7 @@ export async function POST(req: NextRequest) {
     } else {
       session = await stripe.checkout.sessions.create({
         mode: "subscription",
+        customer_email: email,
         line_items: [
           {
             price_data: {
@@ -79,9 +142,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error("Stripe error:", error);
+    console.error("Checkout error:", error);
     return NextResponse.json(
-      { error: "Failed to create checkout session" },
+      { error: "Failed to process request" },
       { status: 500 }
     );
   }

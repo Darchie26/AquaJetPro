@@ -1,5 +1,7 @@
+"use client";
+
 const stats = [
-  { num: "600", suffix: "+", label: "Happy Customers" },
+  { num: "5", suffix: "★", label: "Star Rated Service" },
   { num: "99", suffix: "%", label: "Satisfaction Rate" },
   { num: "48", suffix: "hr", label: "Booking Response" },
   { num: "100", suffix: "%", label: "Eco-Safe Products" },
@@ -32,10 +34,14 @@ export default function Hero() {
 
       {/* CTAs */}
       <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
-        <button className="text-[15px] font-bold bg-[#ff00f3] text-black px-7 py-3.5 rounded-[10px] hover:brightness-110 transition-all border-none cursor-pointer">
+        <button
+          onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
+          className="text-[15px] font-bold bg-[#ff00f3] text-black px-7 py-3.5 rounded-[10px] hover:brightness-110 transition-all border-none cursor-pointer">
           Book Your First Clean →
         </button>
-        <button className="text-[15px] font-medium bg-transparent text-white/60 border border-white/15 px-6 py-3.5 rounded-[10px] hover:text-[#03ffff] hover:border-[#03ffff]/30 transition-all cursor-pointer">
+        <button
+          onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
+          className="text-[15px] font-medium bg-transparent text-white/60 border border-white/15 px-6 py-3.5 rounded-[10px] hover:text-[#03ffff] hover:border-[#03ffff]/30 transition-all cursor-pointer">
           See How It Works
         </button>
       </div>

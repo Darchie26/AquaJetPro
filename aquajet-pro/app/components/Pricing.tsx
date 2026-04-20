@@ -63,13 +63,21 @@ export default function Pricing() {
   const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  const handleCheckout = async (planName: string) => {
+  const handleCheckout = async (planName: string, formData?: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    address: string;
+    trashDay: string;
+    notes: string;
+  }) => {
     setLoadingPlan(planName);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planName }),
+        body: JSON.stringify({ plan: planName, ...formData }),
       });
       const data = await res.json();
       if (data.url) {
@@ -179,9 +187,9 @@ export default function Pricing() {
       <BookingModal
         plan={selectedPlan}
         onClose={() => setSelectedPlan(null)}
-        onConfirm={(planName) => {
+        onConfirm={(planName, formData) => {
           setSelectedPlan(null);
-          handleCheckout(planName);
+          handleCheckout(planName, formData);
         }}
       />
     </>
